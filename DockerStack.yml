@@ -1,0 +1,48 @@
+version: "3.2"
+services:
+  app:
+    image: mynew-app
+    restart: always
+    ports:
+      - "80:3500"
+    networks:
+      - devmvp
+    deploy:
+      replicas: 2
+
+  mongoapp:
+    image: my-mongo-app
+    restart: always
+    ports:
+      - "82:7000"
+    networks:
+      - devmvp
+    deploy:
+      replicas: 1
+  mongo:
+    image: mongo
+    volumes:
+      - /Users/sudhirkumar/Workspace/docker1/contact-details/docker-context:/data/db
+      - /Users/sudhirkumar/Workspace/docker1/contact-details/docker-context:/etc/mongod.conf
+    ports:
+      - "27018:27017"
+    networks:
+      - devmvp
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8099:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - devmvp
+
+networks:
+  devmvp:
+    ipam:
+       config:
+          - subnet: 192.168.1.0/26

@@ -2,13 +2,13 @@ const express = require('express')
 const square = require('./square')
 const wiki = require('./wiki')
 const path = require('path')
-const MongoClient = require('mongodb').MongoClient
-const url = 'mongodb://localhost:27017/contacts'
+// const MongoClient = require('mongodb').MongoClient
+// const url = 'mongodb://localhost:27017/contacts'
 
 let db
 // app is an object or an instance, has methods for routing http requests
 const app = express()
-const PORT = 3000
+const PORT = 3500
 
 // app.all(), routing method will be called in response to any HTTP method. This is used for loading middleware functions at a
 // particular path for all request methods.
@@ -72,21 +72,25 @@ app.get('/area', function (req, res) {
 app.get('/contacts', function (req, res) {
   const dbo = db.db('contacts')
   // const query = {State: 'Karnataka'}
-  dbo.collection('contacts').find({}).toArray(function (err, result) {
-    if (err) throw err
-    res.send(result)
-  })
+  // dbo.collection('contacts').find({}).toArray(function (err, result) {
+  //   if (err) throw err
+  //   res.send(result)
+  // })
 })
 
 // app.use() method add the Router to the middleware handling path. The two routes will then be accessible from /wiki/ and /wiki/about/
 app.use('/wiki', wiki)
 
-MongoClient.connect(url, function (err, db1) {
-  if (err) throw err
-  db = db1
-  app.listen(PORT, function () {
+app.listen(PORT, function () {
     console.log('Example app listening on port ', PORT)
   })
-  // const server = app.listen(3000)
-  // const everyone = require('now').initialize(server)
-})
+
+// MongoClient.connect(url, function (err, db1) {
+//   if (err) throw err
+//   db = db1
+//   app.listen(PORT, function () {
+//     console.log('Example app listening on port ', PORT)
+//   })
+//   // const server = app.listen(3000)
+//   // const everyone = require('now').initialize(server)
+// })
