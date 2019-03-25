@@ -15,5 +15,5 @@ WORKDIR /home/node/app/test
 
 EXPOSE 3500
 
-CMD npm install && npm start
+CMD npm install && npm build
 
